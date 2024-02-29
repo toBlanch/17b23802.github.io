@@ -1,0 +1,49 @@
+.Soul{
+    background-color: red;
+    left: 4%;
+    width: 2%;
+    top: 4%;
+    height: 4%;
+    position: fixed;
+}
+
+.main{
+    background-color: black;
+    color: darkgreen;
+    position: fixed;
+}
+
+.Heading{
+    font-family:'Times New Roman', Times, serif;
+}
+
+.Box{
+    top: 10%;
+    left: 10%;
+    color: green;
+    border:1px;
+    border-style: solid;
+    position: fixed;
+}
+
+.Hp{
+    left: 1%;
+    top: 1%;
+    width: 10%;
+    height: 1%;
+    background-color:yellow;
+    position: fixed;
+}
+
+.HpNumber{
+    left: 30%;
+    top: 90%;
+    color: white;
+    position: fixed;
+}
+
+.Shot{
+    color: yellow;
+    background-color: yellow;
+    position: fixed;
+}
