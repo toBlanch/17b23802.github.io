@@ -1,28 +1,46 @@
-.Soul{
-    background-color: red;
-    left: 4%;
-    width: 2%;
-    top: 4%;
-    height: 4%;
-    position: fixed;
-}
-
 .main{
     background-color: black;
-    color: darkgreen;
+    color: white;
     position: fixed;
 }
 
 .Heading{
     font-family:'Times New Roman', Times, serif;
+    display: initial;
+}
+
+.Start{
+    font-family:'Times New Roman', Times, serif;
+    color: yellow;
+    display: initial;
+}
+
+.Soul{
+    transform: scaleY(1);
+    left: 4%;
+    width: 2%;
+    top: 4%;
+    height: 4%;
+    display: none;
+    position: fixed;
+}
+
+.Button{
+    
+    position: fixed;
+}
+
+.MiscText{
+    position: fixed;
 }
 
 .Box{
     top: 10%;
     left: 10%;
-    color: green;
+    color: blue;
     border:1px;
     border-style: solid;
+    display: none;
     position: fixed;
 }
 
@@ -32,18 +50,42 @@
     width: 10%;
     height: 1%;
     background-color:yellow;
+    display: none;
+    position: fixed;
+}
+
+.HpRed{
+    left: 1%;
+    top: 1%;
+    width: 10%;
+    height: 1%;
+    background-color:red;
+    display: none;
     position: fixed;
 }
 
 .HpNumber{
     left: 30%;
     top: 90%;
-    color: white;
+    font-size: 2em;
+    color: blue;
+    display: none;
     position: fixed;
 }
 
-.Shot{
-    color: yellow;
+.Shot {
     background-color: yellow;
+    display: none;
+    position: fixed;
+}
+
+.Attack {
+    background-color: white;
+    display: none;
+    position: fixed;
+}
+
+.MenuButton {
+    display: none;
     position: fixed;
 }

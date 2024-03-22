@@ -1,0 +1,10 @@
+box - 32,250 - 606,389
+
+hp - 275,400 - 395,420
+Misc Text - 30,403 - 499,417
+
+button y - 432,473
+button xs - 32, 185, 345, 500
+button width - 141-32
+
+All these coords are for 640*480

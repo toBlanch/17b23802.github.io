@@ -20,11 +20,40 @@ function yNormalisation(y, height){
     }
 }
 
-function UpdateRect(elementText, x, y, width, height, border){
+function UpdateRect(elementText, x, y, width, height, display, rotationDegrees){
+    if(x<0){
+        width+=x;
+        x=0;
+    }
+    else if(x + width>800){
+        width=800-x;
+        if(width < 0){
+            width = 0;
+        }
+    }
+
+    if(y<0){
+        height+=y;
+        y=0;
+    }
+    else if(y + height>600){
+        height=600-y;
+        if(height < 0){
+            height = 0;
+        }
+    }
+
     const element = document.querySelector(elementText);
     element.style.left = xNormalisation(x, false);
     element.style.top = yNormalisation(y, false);
     element.style.width = xNormalisation(width, true);
     element.style.height = yNormalisation(height, true);
-    element.style.border = xNormalisation(border);
+    if(display){
+        element.style.display = "initial";
+    }
+    else{
+        element.style.display = "none";
+    }
+    
+    element.style.rotate = rotationDegrees+"deg"
 }
