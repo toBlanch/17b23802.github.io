@@ -1,53 +1,44 @@
-function xNormalisation(x, width){
+function xNormalisation(x){
     if(window.innerWidth / 4 <= window.innerHeight / 3) { //If the relative width is less than relative height
-        return x/800*100 + "%"; //Render as normal
-    }
+        return x/800*100; //Render as normal
+    }        
     else { //Else, scale
         var lowerBound = (window.innerWidth-window.innerHeight*4/3) /window.innerWidth*100/2; //The minimum x value as a percentage
-        var mid = 100-lowerBound*2;
-        return lowerBound*!width + mid/100*x/800*100 + "%";
+        // if(x < 0){
+        //     return lowerBound;
+        // }
+        // else if (x > 800){
+        //     return 100-lowerBound;
+        // }
+        var centreReigon = (100-lowerBound*2)/100;
+        return lowerBound + centreReigon*x/800*100;
     }
 }
  
-function yNormalisation(y, height){
+function yNormalisation(y){
     if(window.innerWidth / 4 >= window.innerHeight / 3) { //If the relative height is less than relative width
-        return y/600*100 + "%"; //Render as normal
+        return y/600*100; //Render as normal
     }
     else { //Else, scale
         var lowerBound = (window.innerHeight-window.innerWidth*3/4) /window.innerHeight*100/2; //The minimum x value as a percentage
-        var mid = 100 - lowerBound * 2;
-        return lowerBound*!height + mid/100 * y/600*100 + "%";
+        // if(y <= 0){
+        //     return lowerBound;
+        // }
+        // else if (y >= 600){
+        //     return 100-lowerBound;
+        // }
+        var centreReigon = (100-lowerBound*2)/100;
+        return lowerBound + centreReigon * y/600*100;
     }
 }
 
-function UpdateRect(elementText, x, y, width, height, display, rotationDegrees){
-    if(x<0){
-        width+=x;
-        x=0;
-    }
-    else if(x + width>800){
-        width=800-x;
-        if(width < 0){
-            width = 0;
-        }
-    }
-
-    if(y<0){
-        height+=y;
-        y=0;
-    }
-    else if(y + height>600){
-        height=600-y;
-        if(height < 0){
-            height = 0;
-        }
-    }
-
+function UpdateRect(elementText, coordinates, display){
     const element = document.querySelector(elementText);
-    element.style.left = xNormalisation(x, false);
-    element.style.top = yNormalisation(y, false);
-    element.style.width = xNormalisation(width, true);
-    element.style.height = yNormalisation(height, true);
+    element.style.left = xNormalisation(coordinates.x) + "%";
+    element.style.top = yNormalisation(coordinates.y) + "%";
+    element.style.width = xNormalisation(coordinates.x + coordinates.width) - xNormalisation(coordinates.x) + "%";
+    element.style.height = yNormalisation(coordinates.y + coordinates.height) - yNormalisation(coordinates.y) + "%";
+
     if(display){
         element.style.display = "initial";
     }
@@ -55,5 +46,36 @@ function UpdateRect(elementText, x, y, width, height, display, rotationDegrees){
         element.style.display = "none";
     }
     
-    element.style.rotate = rotationDegrees+"deg"
+    element.style.rotate = coordinates.angle+"deg"
+}
+
+function DrawBorders(){
+    var lowerBound = (window.innerHeight-window.innerWidth*3/4) /window.innerHeight*100/2; //The minimum x value as a percentage
+    const border1 = document.querySelector('.Border1');
+    const border2 = document.querySelector('.Border2');
+    if(window.innerWidth / 4 <= window.innerHeight / 3){ //If borders should be at the top and bottom
+        var lowerBound = (window.innerHeight-window.innerWidth*3/4) /window.innerHeight*100/2; //The minimum x value as a percentage
+        border1.style.left = "0%";
+        border1.style.top = "0%";
+        border1.style.width = "100%";
+        border1.style.height = lowerBound + "%";
+
+        border2.style.left = "0%";
+        border2.style.top = 100 - lowerBound + "%";
+        border2.style.width = "100%";
+        border2.style.height = "100%";
+
+    }
+    else{ //If borders should be at the left and right
+        var lowerBound = (window.innerWidth-window.innerHeight*4/3) /window.innerWidth*100/2; //The minimum x value as a percentage
+        border1.style.left = "0%";
+        border1.style.top = "0%";
+        border1.style.width = lowerBound + "%";
+        border1.style.height = "100%";
+
+        border2.style.left = 100 - lowerBound + "%";
+        border2.style.top = "0%";
+        border2.style.width = "100%";
+        border2.style.height = "100%";
+    }
 }

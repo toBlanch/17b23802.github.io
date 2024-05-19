@@ -11,6 +11,9 @@ var shootHeld = false;
 var dodge = false;
 var dodgeHeld = false;
 
+var fps = 60;
+var waitingUntilDodgePressed = false;
+
 var menu = false;
 
 var running = false;
@@ -20,16 +23,51 @@ var prevTime = 0;
 var damage = 11;
 
 class Coordinates{
-   x = 0;
-   y = 0;
-   width = 0;
-   height = 0;
+   x=0;
+   y=0;
+   width=0;
+   height=0;
+   angle=0;
 
-   constructor(rx,ry,rwidth,rheight){
+   constructor(rx=0, ry=0, rwidth=0, rheight=0, rangle=0){
+      this.x = rx;
+      this.y = ry;
+      this.width = rwidth;
+      this.height = rheight;
+      this.angle = rangle;
+
+      while(this.angle < 0){
+         this.angle += 360;
+      }
+      while (this.angle > 360){
+         this.angle -= 360;
+      }
+   }
+}
+
+class Point{
+   x=0;
+   y=0;
+
+   constructor(rx,ry){
       this.x=rx;
       this.y=ry;
-      this.width=rwidth;
-      this.height=rheight;
+   }
+}
+
+class Line{
+   initial=0;
+   length=0;
+
+   constructor(rinitial,rlength){
+      if(rlength<0){ //If the length is backwards
+         this.initial = rinitial + rlength; //Move the initial value back
+         this.length = -rlength; //Use the correct length
+      }
+      else{ //Otherwise use the inputted values
+         this.initial = rinitial;
+         this.length = rlength;
+      }
    }
 }
 
@@ -51,6 +89,9 @@ window.addEventListener("keydown", function (event) {
    }
    if (event.key == "x" || event.key == "Shift"){
       dodge = true;
+   }
+   if (event.key == "c"){
+      soul.autoShoot =! soul.autoShoot;
    }
 }, true);
 

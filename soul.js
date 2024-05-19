@@ -1,15 +1,13 @@
 class Soul{
     invincibility = 0;
-    x = 0;
-    y = 0;
-    width = 0;
-    height = 0;
+    coordinates = new Coordinates(0,0,0,0,0);
     vx = 0;
     vy = 0;
     hp = 92;
     maxhp = 92;
 
     dodge = {
+        unlocked: false,
         duration: 30,
         cooldown: 0,
         left: false,
@@ -30,6 +28,7 @@ class Soul{
     shootCooldown = 0;
     shots = [new Shot, new Shot, new Shot, new Shot, new Shot, new Shot, new Shot, new Shot, new Shot, new Shot];
     shootHeldDuration = 0;
+    autoShoot = false;
 
     items = ["Gunpowder", "FL Cupcake","FL Cupcake","FL Cupcake","Cnm. Cookie","G Granola","G Granola","G Granola"]
     itemsHealth = [
@@ -70,11 +69,8 @@ class Soul{
     }
 
 
-    constructor(x, y, width, height, hp){
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+    constructor(rCoordinates, hp){
+        this.coordinates = rCoordinates;
         this.hp = hp;
     }
 
@@ -86,6 +82,7 @@ class Soul{
                     this.menuItem.secondPage = false;
                     this.startNextAttack = true;
                     this.dodge.cooldown = 0;
+                    this.shootHeldDuration = this.autoShoot?0:-10000; //Makes it so that a shot isn't fired as soon as the attack starts unless auto shoot is active
                     this.vx = 0;
                     this.vy = 0;
                     this.invincibility = 0;
@@ -94,6 +91,7 @@ class Soul{
                     this.menuItem.y = -1;
                     box.fullTextToOutput = "";
                     box.textToOutput = "";
+                    this.coordinates.angle = 180;
                 }
             }
             else if(dodge && !dodgeHeld){ //If speeding up the text
@@ -148,8 +146,8 @@ class Soul{
                         this.menuItem.y = 1;
                     }
                 }
-                this.x = this.selectionCoords.x[this.menuItem.x]
-                this.y = this.selectionCoords.y[this.menuItem.y]
+                this.coordinates.x = this.selectionCoords.x[this.menuItem.x]
+                this.coordinates.y = this.selectionCoords.y[this.menuItem.y]
             }
             else { //Button pressed
                 if (this.menuItem.button == 1 && !this.menuItem.selectedName){
@@ -231,22 +229,22 @@ class Soul{
                     this.menuItem.button = 0;
                 }
             }
-            this.x = this.buttonCoords.x[this.menuItem.button];
-            this.y = this.buttonCoords.y;
+            this.coordinates.x = this.buttonCoords.x[this.menuItem.button];
+            this.coordinates.y = this.buttonCoords.y;
         }
     }
 
     AttackUpdate(){
         if (this.dodge.cooldown >= 120 - this.dodge.duration) { //If dodging
-            this.x += 15*this.dodge.right - 15*this.dodge.left;
-            this.y += 15*this.dodge.down - 15*this.dodge.up;
+            this.coordinates.x += 15*this.dodge.right - 15*this.dodge.left;
+            this.coordinates.y += 15*this.dodge.down - 15*this.dodge.up;
         }
         else { //If not dodging
-            this.x += 10*right - 10*left;
-            this.y += 10*down - 10*up;
+            this.coordinates.x += 10*right - 10*left;
+            this.coordinates.y += 10*down - 10*up;
         }
 
-        if (dodge && this.dodge.cooldown <= 0 && !dodgeHeld && (left||right||up||down)) { //If a dodge should start
+        if (dodge && this.dodge.unlocked && this.dodge.cooldown <= 0 && !dodgeHeld && (left||right||up||down)) { //If a dodge should start
             this.dodge.cooldown=120;
             this.dodge.left = left;
             this.dodge.right = right;
@@ -257,11 +255,10 @@ class Soul{
         if (!shoot && this.shootHeldDuration > 0 && this.shootCooldown <= 0) { //If a shot should be fired
             for(let i = 0; i < 10; i++){
                 if(this.shots[i].duration == 0){
-                    let big = this.shootHeldDuration > 60;
-                    this.shots[i].Activate(
-                        this.x + this.width/2 - (this.smallShot.width * !big + this.bigShot.width * big)/2, 
-                        this.y + this.height/2 - (this.smallShot.height * !big + this.bigShot.height * big), 
-                        big);
+                    let big = this.shootHeldDuration >= 60;
+                    var newShotWidth =  big?this.bigShot.width:this.smallShot.width;
+                    var newShotHeight = big?this.bigShot.height:this.smallShot.height;
+                    this.shots[i].Activate(new Coordinates(this.coordinates.x + this.coordinates.width/2 - newShotWidth/2, this.coordinates.y + this.coordinates.height/2 - newShotHeight, newShotWidth, newShotHeight), big);
                     this.shootCooldown = 60;
                     break;
                 }
@@ -272,13 +269,13 @@ class Soul{
             this.shots[i].Update(); //Update all shots
         }
 
-        this.shootHeldDuration = this.shootHeldDuration*shoot + shoot*(this.shootCooldown<=0);
+        this.shootHeldDuration = (shoot || this.autoShoot)*(this.shootHeldDuration + (this.shootCooldown<=0)); //Increases the duration if shooting and shot is off cooldown
         this.shootCooldown--;
         this.dodge.cooldown--;
         this.invincibility--;
     }
 
-    Hit (damage){
+    Hit(){
         if (this.dodge.cooldown < 120 - this.dodge.duration && this.invincibility <= 0){
             this.invincibility = 100;
             this.hp -= damage;
@@ -286,15 +283,33 @@ class Soul{
     }
 
     EndAttack(){
-        for(let i = 0; i < 10; i++){
+        for(let i = 0; i < this.shots.length; i++){
             this.shots[i].duration = 0;
         }
+        this.coordinates.angle = 0;
     }
 
     Draw(){
-        UpdateRect('.Soul', this.x, this.y, this.width, this.height, true, 180*!menu);
-        for(let i = 0; i < 10; i++){
-            UpdateRect(".Shot" + i, this.shots[i].x, this.shots[i].y, this.smallShot.width * !this.shots[i].big + this.bigShot.width * this.shots[i].big, this.smallShot.height * !this.shots[i].big + this.bigShot.height * this.shots[i].big, this.shots[i].duration > 0);
+        UpdateRect('.Soul', this.coordinates, true);
+        for(let i = 0; i < this.shots.length; i++){
+            // var shotID = document.getElementById(".Shot" + i);
+            // if(this.shots[i].big){
+            //     shotID.src="";
+            //     shotID.style.backgroundColor = "yellow";
+            // }
+            // else{
+            //     shotID.src="Images/TempShot.png";
+            //     shotID.style.backgroundColor = "none";
+            // }
+            if(this.shots[i].big){
+                document.getElementById("Shot" + i).src="";
+                document.getElementById("Shot" + i).style.backgroundColor = "yellow";
+            }
+            else{
+                document.getElementById("Shot" + i).src="Images/TempShot.png";
+                document.getElementById("Shot" + i).style.backgroundColor = "none";
+            }
+            UpdateRect(".Shot" + i, this.shots[i].coordinates, this.shots[i].duration > 0);
         }
     }
 }
