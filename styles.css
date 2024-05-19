@@ -1,14 +1,14 @@
-.main{
+.main {
     background-color: black;
     color: white;
 }
 
-.Heading{
-    font-family:'Times New Roman', Times, serif;
+.Heading {
+    font-family: 'Times New Roman', Times, serif;
     display: initial;
 }
 
-.Border{
+.Border {
     background-color: black;
     left: 4%;
     width: 2%;
@@ -16,13 +16,13 @@
     height: 4%;
 }
 
-.Start{
-    font-family:'Times New Roman', Times, serif;
+.Start {
+    font-family: 'Times New Roman', Times, serif;
     color: yellow;
     display: initial;
 }
 
-.Soul{
+.Soul {
     left: 4%;
     width: 2%;
     top: 4%;
@@ -30,39 +30,39 @@
     display: none;
 }
 
-.PositionFixed{
+.PositionFixed {
     position: fixed;
     display: none;
 }
 
-.Box{
+.Box {
     top: 10%;
     left: 10%;
     color: blue;
-    border:1px;
+    border: 1px;
     border-style: solid;
     display: none;
 }
 
-.Hp{
+.Hp {
     left: 1%;
     top: 1%;
     width: 10%;
     height: 1%;
-    background-color:yellow;
+    background-color: yellow;
     display: none;
 }
 
-.HpRed{
+.HpRed {
     left: 1%;
     top: 1%;
     width: 10%;
     height: 1%;
-    background-color:red;
+    background-color: red;
     display: none;
 }
 
-.HpNumber{
+.HpNumber {
     left: 30%;
     top: 90%;
     font-size: 2em;
