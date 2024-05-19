@@ -135,7 +135,8 @@ function WaitUntilDodgePressed(){
       soul.dodge.down = false;
    }
    else{
-      setTimeout(WaitUntilDodgePressed, 1000/60);
+        Draw();
+        setTimeout(WaitUntilDodgePressed, 1000/60);
    }
 }
 
