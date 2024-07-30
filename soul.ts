@@ -28,6 +28,7 @@ class Soul {
     shootCooldown = 0;
     shots = [new Shot, new Shot, new Shot, new Shot, new Shot, new Shot, new Shot, new Shot, new Shot, new Shot];
     shootHeldDuration = 0;
+    brightness = 0;
     autoShoot = false;
 
     items = ["Gunpowder", "FL Cupcake", "FL Cupcake", "FL Cupcake", "Cnm. Cookie", "G Granola", "G Granola", "G Granola"]
@@ -261,6 +262,16 @@ class Soul {
                 }
             }
         }
+        else if(this.shootHeldDuration > 60){
+            let brightnessModifier = this.shootHeldDuration % 60 / 60;
+            if (brightnessModifier<30){
+                brightnessModifier=60-brightnessModifier;
+            }
+            this.brightness = 100 * brightnessModifier / 30;
+        }
+        else{
+            this.brightness = 0;
+        }
 
         for (let i = 0; i < 10; i++) {
             this.shots[i].Update(); //Update all shots
@@ -287,7 +298,7 @@ class Soul {
     }
 
     Draw() {
-        UpdateRect('.Soul', this.coordinates, true);
+        UpdateRect('.Soul', this.coordinates, 100);
         for (let i = 0; i < this.shots.length; i++) {
             // var shotID = document.getElementById(".Shot" + i);
             // if(this.shots[i].big){
@@ -306,7 +317,7 @@ class Soul {
                 (document.getElementById("Shot" + i)! as any).src = "Images/TempShot.png";
                 document.getElementById("Shot" + i)!.style.backgroundColor = "none";
             }
-            UpdateRect(".Shot" + i, this.shots[i].coordinates, this.shots[i].duration > 0);
+            UpdateRect(".Shot" + i, this.shots[i].coordinates, (this.shots[i].duration > 0)?100:0);
         }
     }
 }

@@ -1,7 +1,7 @@
 /*
 Upcoming changes:
    Graphical stuff
-   Add indicator that a big shot is ready / charging
+   Add indicator that a big shot is ready / charging (4 circles around the soul hoam in and the soul flashes white when fully charged)
    Add little icons (for act item and mercy)
    Implement Square, falling feather, exploding, telegraphed attacks
    Allow attacks to change the size of the box???
@@ -149,22 +149,22 @@ function Draw() {
       if (soul.menuText[i] != "") {
          textToOutput = "*" + soul.menuText[i]
       }
-      UpdateRect('.MenuButton' + i, new Coordinates(soul.selectionCoords.x[i % 2] + 30, soul.selectionCoords.y[i > 1 ? 1 : 0], 100, 20, 0), true);
+      UpdateRect('.MenuButton' + i, new Coordinates(soul.selectionCoords.x[i % 2] + 30, soul.selectionCoords.y[i > 1 ? 1 : 0], 100, 20, 0), 100);
       document.getElementById("MenuButton" + i)!.innerHTML = textToOutput;
    }
 
-   UpdateRect('.SoulHp', new Coordinates(344, 500, 150 * soul.hp / 92, 25, 0), true);
-   UpdateRect('.SoulHpRed', new Coordinates(344, 500, 150, 25, 0), true);
-   UpdateRect('.MartletHp', new Coordinates(200, 20, 400 * martlet.hp / martlet.maxHp, 10, 0), true);
-   UpdateRect('.MartletHpRed', new Coordinates(200, 20, 400, 10, 0), true);
+   UpdateRect('.SoulHp', new Coordinates(344, 500, 150 * soul.hp / 92, 25, 0), 100);
+   UpdateRect('.SoulHpRed', new Coordinates(344, 500, 150, 25, 0), 100);
+   UpdateRect('.MartletHp', new Coordinates(200, 20, 400 * martlet.hp / martlet.maxHp, 10, 0), 100);
+   UpdateRect('.MartletHpRed', new Coordinates(200, 20, 400, 10, 0), 100);
 
-   UpdateRect('.HpNumber', new Coordinates(530, 504, 200, 18, 0), true);
+   UpdateRect('.HpNumber', new Coordinates(530, 504, 200, 18, 0), 100);
    document.getElementById("HpNumber")!.innerHTML = soul.hp;
-   UpdateRect(".Fight", new Coordinates(40, 540, 136, 51, 0), true);
-   UpdateRect(".Act", new Coordinates(231, 540, 136, 51, 0), true);
-   UpdateRect(".Item", new Coordinates(431, 540, 136, 51, 0), true);
-   UpdateRect(".Mercy", new Coordinates(625, 540, 136, 51, 0), true);
-   UpdateRect(".AutoShoot", new Coordinates(700, 500, 50, 20, 0), soul.autoShoot);
-   UpdateRect(".MiscText", new Coordinates(37, 504, 587, 18, 0), true);
+   UpdateRect(".Fight", new Coordinates(40, 540, 136, 51, 0), 100);
+   UpdateRect(".Act", new Coordinates(231, 540, 136, 51, 0), 100);
+   UpdateRect(".Item", new Coordinates(431, 540, 136, 51, 0), 100);
+   UpdateRect(".Mercy", new Coordinates(625, 540, 136, 51, 0), 100);
+   UpdateRect(".AutoShoot", new Coordinates(700, 500, 50, 20, 0), soul.autoShoot?100:0);
+   UpdateRect(".MiscText", new Coordinates(37, 504, 587, 18, 0), 100);
    attackPatterns[currentAttack].Draw();
 }

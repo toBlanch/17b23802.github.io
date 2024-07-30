@@ -20,19 +20,14 @@ function yNormalisation(y) {
     }
 }
 
-function UpdateRect(elementText, coordinates, display) {
+function UpdateRect(elementText, coordinates, brightness) {
     const element = document.querySelector(elementText);
     element.style.left = xNormalisation(coordinates.x) + "%";
     element.style.top = yNormalisation(coordinates.y) + "%";
     element.style.width = xNormalisation(coordinates.x + coordinates.width) - xNormalisation(coordinates.x) + "%";
     element.style.height = yNormalisation(coordinates.y + coordinates.height) - yNormalisation(coordinates.y) + "%";
 
-    if (display) {
-        element.style.display = "initial";
-    }
-    else {
-        element.style.display = "none";
-    }
+    element.style.brightness = brightness + "%";
 
     element.style.rotate = coordinates.angle + "deg"
 }

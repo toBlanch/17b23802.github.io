@@ -24,7 +24,7 @@ class AttackPattern {
     Draw() {
         for (let i = 0; i < this.attacks.length; i++) {
             (document.getElementById("Attack" + i)! as any).src = "Images/" + this.attacks[i].image + ".png";
-            UpdateRect(".Attack" + i, this.attacks[i].coordinates, this.attacks[i].CanDraw() && this.duration > 0);
+            UpdateRect(".Attack" + i, this.attacks[i].coordinates, (this.attacks[i].CanDraw() && this.duration > 0)?100:0);
         }
     }
 }

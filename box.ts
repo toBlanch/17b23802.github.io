@@ -88,7 +88,7 @@ class Box {
     }
 
     Draw() {
-        UpdateRect('.Box', this.coordinates, true);
+        UpdateRect('.Box', this.coordinates, 100);
         document.getElementById("Box")!.innerHTML = this.textToOutput;
     }
 }
